@@ -1,81 +1,52 @@
 <template>
-  <v-app>
-    <navigation :color="color" :flat="flat" />
-    <v-main class="pt-0">
-      <home />
-      <about />
-      <download />
-      <pricing />
-      <contact />
-    </v-main>
+  <v-app id="app">
+    <navigation :route="$router.currentRoute.path" :color="color" :flat="flat" />
+    <router-view />
     <v-scale-transition>
       <v-btn
-        fab
-        v-show="fab"
-        v-scroll="onScroll"
-        dark
-        fixed
-        bottom
-        right
-        color="secondary"
-        @click="toTop"
+          fab
+          v-show="fab"
+          v-scroll="onScroll"
+          fixed
+          bottom
+          right
+          color="primary"
+          @click="toTop"
       >
         <v-icon>mdi-arrow-up</v-icon>
       </v-btn>
     </v-scale-transition>
-    <foote />
   </v-app>
 </template>
-
-<style scoped>
-.v-main {
-  background-image: url("~@/assets/img/bgMain.png");
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap');
+#app {
+  font-family: 'Fira Sans', sans-serif;
+  color: #000000 !important;
 }
+
 </style>
 
 <script>
 import navigation from "./components/Navigation";
-import foote from "./components/Footer";
-import home from "./components/HomeSection";
-import about from "./components/AboutSection";
-import download from "./components/DownloadSection";
-import pricing from "./components/PricingSection";
-import contact from "./components/ContactSection";
 
 export default {
   name: "App",
 
   components: {
     navigation,
-    foote,
-    home,
-    about,
-    download,
-    pricing,
-    contact,
   },
 
   data: () => ({
-    fab: null,
     color: "",
     flat: null,
+    fab: null,
   }),
-
-  created() {
-    const top = window.pageYOffset || 0;
-    if (top <= 60) {
-      this.color = "transparent";
-      this.flat = true;
-    }
-  },
-
   watch: {
     fab(value) {
       if (value) {
-        this.color = "secondary";
+        this.color = "white";
         this.flat = false;
       } else {
         this.color = "transparent";
@@ -94,5 +65,14 @@ export default {
       this.$vuetify.goTo(0);
     },
   },
+  created() {
+    const top = window.pageYOffset || 0;
+    if (top <= 60) {
+      this.color = "transparent";
+      this.flat = true;
+    }
+  },
+
+
 };
 </script>

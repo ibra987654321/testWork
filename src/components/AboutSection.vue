@@ -1,59 +1,21 @@
 <template>
   <section id="about">
-    <v-container fluid>
+    <v-container fluid >
       <v-row align="center" justify="center">
         <v-col cols="10">
-          <v-row align="center" justify="center">
-            <v-col cols="12" md="7">
-              <h1 class="font-weight-light display-2">Sobre</h1>
-              <h1 class="font-weight-light display-1 mb-3">
-                Lorem ipsum dolor!
-              </h1>
-              <v-row>
-                <v-col cols="12" class="d-flex align-center">
-                  <v-img
-                    src="@/assets/img/icon1.svg"
-                    max-width="60px"
-                    class="mr-4"
-                  />
-                  <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  </p>
-                </v-col>
-                <v-col cols="12" class="d-flex align-center">
-                  <v-img
-                    src="@/assets/img/icon2.svg"
-                    max-width="60px"
-                    class="mr-4"
-                  />
-                  <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  </p>
-                </v-col>
-                <v-col cols="12" class="d-flex align-center">
-                  <v-img
-                    src="@/assets/img/icon3.svg"
-                    max-width="60px"
-                    class="mr-4"
-                  />
-                  <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  </p>
-                </v-col>
-              </v-row>
+          <v-row align="center" justify="space-around">
+            <v-col cols="12" class="text-center">
+              <h1 class="font-weight-bold mt-15 title_1">О нас</h1>
+              <h3 class="font-weight-light mt-3" :class="!$vuetify.breakpoint.xs ? 'mx-16' : 'text-left'" >
+                Наша команда - это более 3000 уникальных талантов по всему Кыргызстану. Мы ценим честных и открытых сотрудников, готовых к  работе в динамично развивающейся телеком-команде, ведь мы работаем по таким новым направлениям как Big Data, IOT, мобильные финансы и много другое.
+              </h3>
             </v-col>
-            <v-col cols="12" md="5" class="d-none d-md-flex">
-              <v-img
-                src="@/assets/img/ill1.svg"
-                class="d-block ml-auto mr-auto"
-                max-width="400px"
-              />
+            <v-col
+                cols="12"
+                class="text-center"
+            >
+              <iframe  class="video" src="https://www.youtube.com/embed/tgbNymZ7vqY">
+              </iframe>
             </v-col>
           </v-row>
         </v-col>
@@ -61,9 +23,25 @@
     </v-container>
   </section>
 </template>
-
+<script>
+export default {
+  data: () => ({
+    videoId: "i8IvvHJssWE",
+  })
+}
+</script>
 <style scoped>
 #about {
-  background-color: #f4f7f5;
+  background-color: #f5f5f5;
+}
+.font-weight-light {
+
+}
+.video {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  border: none;
+  border-radius: 12px;
 }
 </style>

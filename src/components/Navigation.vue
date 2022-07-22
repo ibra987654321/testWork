@@ -4,17 +4,15 @@
       v-model="drawer"
       app
       temporary
-      dark
-      src="@/assets/img/bgDrawer.jpg"
     >
       <v-list>
         <v-list-item>
           <v-list-item-avatar>
-            <img src="@/assets/img/logo.png" alt="Logo" />
+            <img src="@/assets/beeline/light.png" alt="Logo" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">Calango</v-list-item-title>
-            <v-list-item-subtitle>WEB</v-list-item-subtitle>
+            <v-list-item-title class="title">Beeline Kg</v-list-item-title>
+            <v-list-item-subtitle>Рекрутинг</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -26,54 +24,72 @@
           v-for="([icon, text, link], i) in items"
           :key="i"
           link
-          @click="$vuetify.goTo(link)"
+          @click="$vuetify.goTo(link), drawer = !drawer"
         >
-          <v-list-item-icon class="justify-center">
-            <v-icon>{{ icon }}</v-icon>
-          </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="subtitile-1">{{
-              text
-            }}</v-list-item-title>
+            <v-list-item-title class="subtitile-1">{{text}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar
+        v-if="!$vuetify.breakpoint.xs"
       app
-      :color="color"
+      :color="$props.route === '/' ? color : 'white'"
       :flat="flat"
-      dark
-      class="px-15"
+      class="px-16"
       :class="{ expand: flat }"
     >
       <v-toolbar-title>
-        <v-img src="@/assets/img/logo.png" max-width="50px" />
+        <v-img src="@/assets/beeline/light.png" max-width="50px" />
       </v-toolbar-title>
-      <v-spacer />
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-        class="mr-4"
-        v-if="isXs"
-      />
-      <div v-else>
-        <v-btn text @click="$vuetify.goTo('#hero')">
-          <span class="mr-2">Home</span>
+      <div v-if="$props.route === '/'">
+        <v-btn text @click="$vuetify.goTo('#about')">
+          <span class="mr-2 ">О нас</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#features')">
-          <span class="mr-2">Sobre</span>
+        <v-btn text @click="$vuetify.goTo('#advantage')">
+          <span class="mr-2">Наши преимущества</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#download')">
-          <span class="mr-2">Download</span>
+        <v-btn text @click="$vuetify.goTo('#team')">
+          <span class="mr-2">Beeline Team</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#pricing')">
-          <span class="mr-2">Preços</span>
+        <v-btn text @click="$vuetify.goTo('#instruction')">
+          <span class="mr-2">Кондидатам</span>
         </v-btn>
-        <v-btn rounded outlined text @click="$vuetify.goTo('#contact')">
-          <span class="mr-2">Contate-nos</span>
+        <v-btn text @click="$vuetify.goTo('#instruction')">
+          <span class="mr-2">Инструкция</span>
+        </v-btn>
+        <v-btn text @click="$vuetify.goTo('#FAQ')">
+          <span class="mr-2">FAQ</span>
         </v-btn>
       </div>
+      <v-spacer></v-spacer>
+      <v-btn elevation="0" class="my_btn" to="/profile">
+        <span >Войти</span>
+      </v-btn>
+    </v-app-bar>
+    <v-app-bar
+        v-else
+        app
+        :color="color"
+        :flat="flat"
+        :class="{ expand: flat }"
+    >
+      <v-app-bar-nav-icon
+          @click.stop="drawer = !drawer"
+          class="mr-4"
+          v-if="isXs"
+      />
+      <v-spacer></v-spacer>
+      <v-toolbar-title>
+        <v-img src="@/assets/beeline/light.png" max-width="50px" />
+      </v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-btn elevation="0" class="my_btn" to="/profile">
+        <span >Войти</span>
+      </v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -94,17 +110,20 @@ export default {
   data: () => ({
     drawer: null,
     isXs: false,
+    simplified: false,
     items: [
-      ["mdi-home-outline", "Home", "#hero"],
-      ["mdi-information-outline", "Sobre", "#features"],
-      ["mdi-download-box-outline", "Download", "#download"],
-      ["mdi-currency-usd", "Preços", "#pricing"],
-      ["mdi-email-outline", "Contatos", "#contact"],
+      ["mdi-home-outline", "О нас", "#about"],
+      ["mdi-information-outline", "Наши преимущества", "#advantage"],
+      ["mdi-download-box-outline", "Beeline Team", "#team"],
+      ["mdi-currency-usd", "Кондидатам", "#instruction"],
+      ["mdi-email-outline", "Инструкция", "#instruction"],
+      ["mdi-email-outline", "FAQ", "#FAQ"],
     ],
   }),
   props: {
     color: String,
     flat: Boolean,
+    route: String
   },
   methods: {
     onResize() {
