@@ -2,6 +2,9 @@
   <v-app id="app">
     <navigation :route="$router.currentRoute.path" :color="color" :flat="flat" />
     <router-view />
+    <ThePopup/>
+    <CustomLoginModal/>
+    <TheSnackbar/>
     <v-scale-transition>
       <v-btn
           fab
@@ -30,12 +33,18 @@
 
 <script>
 import navigation from "./components/Navigation";
+import ThePopup from "@/components/TheModels/ThePopup";
+import CustomLoginModal from "@/components/CustomModels/CustomLoginModal";
+import TheSnackbar from "@/components/TheModels/TheSnackbar";
 
 export default {
   name: "App",
 
   components: {
     navigation,
+    ThePopup,
+    CustomLoginModal,
+    TheSnackbar
   },
 
   data: () => ({

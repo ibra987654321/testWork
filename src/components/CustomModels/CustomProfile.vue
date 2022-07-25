@@ -140,92 +140,102 @@
         <h1>Опыт работы</h1>
       </v-col>
       <v-col
-          cols="12"
-          md="12"
-      >
-        <v-text-field
-            v-model="form.experience.position"
-            label="Позиция"
-            :error-messages="experiencePositionErrors"
-            outlined
-            required
-            @input="$v.form.experience.position.$touch()"
-            @blur="$v.form.experience.position.$touch()"
-        ></v-text-field>
-      </v-col>
-      <v-col
-          cols="12"
-          md="6"
-      >
-        <v-text-field
-            v-model="form.experience.name"
-            label="Название компании"
-            :error-messages="experienceNameErrors"
-            outlined
-            required
-            @input="$v.form.experience.name.$touch()"
-            @blur="$v.form.experience.name.$touch()"
-        ></v-text-field>
-      </v-col>
-      <v-col
         cols="12"
-        md="3"
+        md="8"
       >
-        <v-menu
-            v-model="menu"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-                v-model="form.experience.startDate"
-                label="Дата начало"
-                readonly
-                outlined
-                v-bind="attrs"
-                v-on="on"
-                :error-messages="experienceStartErrors"
-                required
-                @input="$v.form.experience.startDate.$touch()"
-                @blur="$v.form.experience.startDate.$touch()"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="form.experience.startDate"
-              @input="menu = false"
-          ></v-date-picker>
-        </v-menu>
+        <v-select
+            outlined
+            :items="['Есть опыт работы', 'Нет опыта']"
+            v-model="experience"
+            :error-messages="experienceErrors"
+            aria-required="true"
+            @change="$v.experience.$touch()"
+            @blur="$v.experience.$touch()"
+        ></v-select>
       </v-col>
       <v-col
-          cols="12"
-          md="3"
+      cols="12"
+      md="12"
       >
-        <v-menu
-            v-model="menu1"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
+        <v-row
+            v-if="experience === 'Есть опыт работы'">
+          <v-col
+              cols="12"
+              md="12"
+          >
             <v-text-field
-                v-model="form.experience.endDate"
-                label="Дата окончания"
-                readonly
+                v-model="form.experience.position"
+                label="Позиция"
                 outlined
-                v-bind="attrs"
-                v-on="on"
             ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="form.experience.endDate"
-              @input="menu1 = false"
-          ></v-date-picker>
-        </v-menu>
+          </v-col>
+          <v-col
+              cols="12"
+              md="6"
+          >
+            <v-text-field
+                v-model="form.experience.name"
+                label="Название компании"
+                outlined
+            ></v-text-field>
+          </v-col>
+          <v-col
+              cols="12"
+              md="3"
+          >
+            <v-menu
+                v-model="menu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="form.experience.startDate"
+                    label="Дата начало"
+                    readonly
+                    outlined
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                  v-model="form.experience.startDate"
+                  @input="menu = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col
+              cols="12"
+              md="3"
+          >
+            <v-menu
+                v-model="menu1"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="form.experience.endDate"
+                    label="Дата окончания"
+                    readonly
+                    outlined
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                  v-model="form.experience.endDate"
+                  @input="menu1 = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     <v-row>
@@ -248,6 +258,35 @@
           ></v-select>
       </v-col>
     </v-row>
+    <v-row v-for="knowledge in knowledgeType">
+      <v-col cols="12">
+        <h1>{{ knowledge.name }}</h1>
+      </v-col>
+      <v-col
+          cols="12"
+          md="4"
+          v-for="item in knowledge.knowledgeList"
+      >
+        <v-checkbox
+            :id="item.id + 'list'" v-model="picked[item.id]"
+            :label="item.knowledgeName"
+        ></v-checkbox>
+          <div v-if="picked[item.id] === true" class="d-flex">
+            <div
+                class="d-flex ml-3"
+                v-for="(level) in item.levels" :key="level.id"
+            >
+              <input type="radio"
+                     class="mt-1 mr-1"
+                     :id="level.id"
+                     :value="{knowledge: item.knowledgeName, level: level.name, id: knowledge.id}"
+                     v-model="answers[item.id]"
+              />
+              <label :for="level.id">{{ level.name }}</label>
+            </div>
+          </div>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12">
         <h1>Желаемый график работы</h1>
@@ -264,7 +303,7 @@
             required
             @change="$v.form.schedule.$touch()"
             @blur="$v.form.schedule.$touch()"
-            :items="educations"
+            :items="schedules"
         ></v-select>
       </v-col>
       <v-col
@@ -278,20 +317,28 @@
         </div>
 
       </v-col>
+      <v-col
+        cols="12"
+        md="12"
+        class="d-flex justify-center"
+      >
+        <v-btn class=" my_btn btn" @click="submits">
+          Отправить
+        </v-btn>
+      </v-col>
     </v-row>
-    <v-btn v-on:click="submits">
-      submit
-    </v-btn>
   </div>
 </template>
 
 <script>
 import {email, required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import {getCandidateType} from "@/helpers/helpers";
 export default {
   mixins: [validationMixin],
   name: "CustomProfile",
   validations: {
+    experience: {required},
     form: {
       name: {required, minLength: minLength(3)},
       surname: {required, minLength: minLength(3)},
@@ -303,24 +350,13 @@ export default {
         month: {required},
         year: {required},
       },
-      experience: {
-        name: {required},
-        startDate: {required},
-        endDate: {required},
-        position: {required}
-      },
+      // experience: {
+      //   name: {required},
+      //   startDate: {required},
+      //   endDate: {required},
+      //   position: {required}
+      // },
       education: {required},
-      questionnaireList: [
-        {
-          name: "",
-          questionnaireAnswers: [
-            {
-              knowledge: "",
-              level: ""
-            }
-          ]
-        }
-      ],
       schedule: {required},
       address: {required},
     }
@@ -332,39 +368,33 @@ export default {
     menu1: false,
     educations: ['среднее общее', 'среднее профессиональное', 'незаконченное высшее', 'высшее'],
     schedules: ['Утренний', 'Дневной', 'Вечерний', 'Ночной'],
-    knowledgeList: [],
+    knowledgeType: [],
+    names: [],
+    answers: [],
+    picked: [],
+    experience: '',
     form: {
-      name: "Bvfy",
-      surname: "",
-      phoneNumber: "",
-      email: "",
-      citizenship: "",
+      name: "Ибрагим",
+      surname: "Орозобаев",
+      phoneNumber: "703215487",
+      email: "ibragimmadiyarov@gmail.com",
+      citizenship: "Кыргыз",
       birthday: {
-        day: '',
-        month: '',
-        year: '',
+        day: 1,
+        month: 7,
+        year: 1997,
       },
       experience: {
-        name: "",
+        name: "Разраб",
         startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        position: ""
+        position: "разраб"
       },
       education: "",
-      questionnaireList: [
-        {
-          name: "",
-          questionnaireAnswers: [
-            {
-              knowledge: "",
-              level: ""
-            }
-          ]
-        }
-      ],
+      questionnaireList: [],
       schedule: "",
-      address: "",
-      candidateType_id: 0
+      address: "Бишкек",
+      candidateType_id:  Number(getCandidateType()),
     }
   }),
   computed: {
@@ -414,10 +444,10 @@ export default {
       !this.$v.form.experience.startDate.required && errors.push('Поле не должно быть пустым')
       return errors
     },
-    experienceEndErrors () {
+    experienceErrors () {
       const errors = []
-      if (!this.$v.form.experience.endDate.$dirty) return errors
-      !this.$v.form.experience.endDate.required && errors.push('Поле не должно быть пустым')
+      if (!this.$v.experience.$dirty) return errors
+      !this.$v.experience.required && errors.push('Поле не должно быть пустым')
       return errors
     },
     experiencePositionErrors () {
@@ -472,8 +502,26 @@ export default {
       return  this.generator(1980,2020)
     },
   },
+  watch: {
+    experience(val) {
+      if (val === 'Нет опыта') {
+        this.form.experience.name = ''
+        this.form.experience.position = ''
+        this.form.experience.startDate = ''
+        this.form.experience.endDate = ''
+      }
+    }
+  },
   mounted() {
-    this.$store.dispatch('getKnowledge').then(r => console.log(r))
+    this.$store.dispatch('getKnowledge').then(r => {
+      this.knowledgeType = r
+      r.map((i, idx) => {
+        const name = i.name
+        const id = i.id
+        this.names.push({name})
+        this.names[idx].id = id
+      })
+    })
   },
   methods: {
     generator(min, max) {
@@ -484,7 +532,33 @@ export default {
       return arr
     },
     submits () {
-      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+      const date = new Date(this.form.birthday.year,this.form.birthday.month -1,  this.form.birthday.day  )
+      this.form.birthday = date.toISOString()
+      this.answers = this.answers.filter(i => typeof (i) !== 'null')
+      const result = this.names.map(item2 => {
+        // отфильтровали массив 1 на наличие элементов с соответствующим id
+        const withCurrentId = this.answers.filter(item1 => item1['id'] === item2['id']);
+        item2.questionnaireAnswers = []
+        item2.questionnaireAnswers.push(...withCurrentId)
+        return { ...item2 };
+      });
+      const newResult = result.map(i => {
+        return {
+          name: i.name,
+          questionnaireAnswers: i.questionnaireAnswers.map(r => {
+            return {
+              knowledge: r.knowledge,
+              level: r.level
+            }
+          })
+        }
+      })
+      this.form.questionnaireList = newResult
+      this.$store.dispatch('submitForm', this.form)
     },
   }
 }
@@ -494,5 +568,12 @@ export default {
 .schedule {
   width: 100%;
   max-width: 455px;
+}
+.btn {
+  font-size: 16px !important;
+  width: 100%;
+  max-width: 494px;
+  height: 100%;
+  min-height: 52px;
 }
 </style>

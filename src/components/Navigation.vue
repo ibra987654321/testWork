@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer
+        v-if="$props.route === '/'"
       v-model="drawer"
       app
       temporary
@@ -17,9 +18,9 @@
         </v-list-item>
       </v-list>
 
-      <v-divider />
+      <v-divider  />
 
-      <v-list dense>
+      <v-list  dense>
         <v-list-item
           v-for="([icon, text, link], i) in items"
           :key="i"
@@ -65,9 +66,27 @@
         </v-btn>
       </div>
       <v-spacer></v-spacer>
-      <v-btn elevation="0" class="my_btn" to="/profile">
-        <span >Войти</span>
-      </v-btn>
+      <div v-if="$props.route === '/'">
+        <v-btn
+
+            elevation="0"
+            class="my_btn"
+            @click="$store.state.modals.type.login = true"
+        >
+          <span >Войти</span>
+        </v-btn>
+      </div>
+      <div  v-else>
+        <v-btn
+
+            elevation="0"
+            class="my_btn"
+            to="/"
+        >
+          <span >На главную</span>
+        </v-btn>
+      </div>
+
     </v-app-bar>
     <v-app-bar
         v-else
@@ -87,8 +106,21 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-btn elevation="0" class="my_btn" to="/profile">
+      <v-btn
+          v-if="$props.route === '/'"
+          elevation="0"
+          class="my_btn"
+          @click="$store.state.modals.type.login = true"
+      >
         <span >Войти</span>
+      </v-btn>
+      <v-btn
+          v-else
+          elevation="0"
+          class="my_btn"
+          to="/"
+      >
+        <span >На главную</span>
       </v-btn>
     </v-app-bar>
   </div>

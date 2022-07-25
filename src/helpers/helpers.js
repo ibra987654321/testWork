@@ -10,7 +10,16 @@ export const removeToken = () => {
 export const setId = id => {
     localStorage.setItem('candidate-id', id)
 }
+export function setCandidateType(id) {
+    localStorage.setItem('candidateType', id)
+}
 
+export function getCandidateType() {
+    return localStorage.getItem('candidateType')
+}
+export const removeCandidateType = () => {
+    localStorage.removeItem('candidateType')
+}
 export const getId = () => localStorage.getItem('candidate-id')
 export const removeId = () => {
     localStorage.removeItem('candidate-id')

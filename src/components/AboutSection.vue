@@ -14,7 +14,7 @@
                 cols="12"
                 class="text-center"
             >
-              <iframe  class="video" src="https://www.youtube.com/embed/tgbNymZ7vqY">
+              <iframe  class="video" src="https://www.youtube.com/embed/qf2suuryXGY?list=RDqf2suuryXGY">
               </iframe>
             </v-col>
           </v-row>

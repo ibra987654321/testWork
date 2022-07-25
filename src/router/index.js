@@ -3,6 +3,7 @@ import Router from "vue-router";
 import landing from "@/pages/landing";
 import Profile from "@/pages/Profile";
 import TheCard from "@/components/TheModels/TheCard";
+import testing from "@/pages/testing";
 
 Vue.use(Router);
 
@@ -19,14 +20,11 @@ const routes = [
         components: { default: Profile, content: TheCard},
 
     },
-    // {
-    //     path: "/login",
-    //     name: "login",
-    //     components: { default: Login },
-    //     props: {
-    //         header: { colorOnScroll: 400 },
-    //     },
-    // },
+    {
+        path: "/testing",
+        name: "testing",
+        components: { default: testing },
+    },
     // {
     //     path: "/profile",
     //     name: "profile",

@@ -33,11 +33,12 @@
                                       max-width="200px"
                                       class="d-block ml-auto mr-auto"
                                   ></v-img>
-                                  <h1 class="font-weight-bold">{{ features[+index + i].title }}</h1>
+                                  <h1 class="font-weight-bold">{{ features[+index + i].candidateType }}</h1>
                                   <h4 class="font-weight-regular ">
-                                    {{ features[+index + i].text }}</h4>
+                                    {{ features[+index + i].city }}</h4>
                                   <v-btn
                                       class="mt-5 btn  my_btn"
+                                      @click="navigate(features[+index + i].id)"
                                   >
                                     <span>Откликнуться</span>
                                   </v-btn>
@@ -59,44 +60,23 @@
 </template>
 
 <script>
+import {setCandidateType} from "@/helpers/helpers";
+
 export default {
   name: "Vacancy",
   data() {
     return {
       img: require('../assets/beeline/Employer1.png'),
-      features: [
-        {
-          img: require("@/assets/img/icon2.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-        {
-          img: require("@/assets/img/icon1.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-        {
-          img: require("@/assets/img/icon3.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-        {
-          img: require("@/assets/img/icon2.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-        {
-          img: require("@/assets/img/icon1.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-        {
-          img: require("@/assets/img/icon3.png"),
-          title: "Онлайн консультант",
-          text: "Ты подойдешь нам, даже если у тебя нет опыта работы. Ты подойдешь нам, опыта работы. ",
-        },
-      ],
+      features: [ ],
     };
+  },
+  created() {
+
+  },
+  mounted() {
+    this.$store.dispatch('candidateType').then(r => {
+      this.features = r
+    })
   },
   computed: {
     columns() {
@@ -114,7 +94,14 @@ export default {
 
       return 1;
     }
+  },
+  methods: {
+    navigate(id) {
+      setCandidateType(id)
+      this.$router.push({name: 'profile'})
+    }
   }
+
 }
 </script>
 

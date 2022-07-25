@@ -4,7 +4,7 @@
       <v-tabs v-model="tab">
         <v-tab >Я тут впервые</v-tab>
         <v-tab>
-          <v-btn text to="/">Мы уже знакомы</v-btn>
+          <v-btn text @click="$store.state.modals.type.login = true">Мы уже знакомы</v-btn>
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="tab" class="pt-7">
@@ -35,5 +35,6 @@ export default {
 <style scoped>
 #bg {
   background: #f5f5f5 ;
+  padding-bottom: 25px;
 }
 </style>
