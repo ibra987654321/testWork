@@ -66,26 +66,26 @@
         </v-btn>
       </div>
       <v-spacer></v-spacer>
-      <div v-if="$props.route === '/'">
+      <div>
         <v-btn
-
             elevation="0"
             class="my_btn"
-            @click="$store.state.modals.type.login = true"
+            :to="$props.route !== '/' ? '/' : ''"
+            @click="$props.route === '/' ? $store.state.modals.type.login = true : ''"
         >
-          <span >Войти</span>
+          <span >{{ $props.route === '/' ? 'Войти' : 'На главную' }}</span>
         </v-btn>
       </div>
-      <div  v-else>
-        <v-btn
+<!--      <div   v-if="$props.route !== '/'">-->
+<!--        <v-btn-->
 
-            elevation="0"
-            class="my_btn"
-            to="/"
-        >
-          <span >На главную</span>
-        </v-btn>
-      </div>
+<!--            elevation="0"-->
+<!--            class="my_btn"-->
+<!--            to="/"-->
+<!--        >-->
+<!--          <span >На главную</span>-->
+<!--        </v-btn>-->
+<!--      </div>-->
 
     </v-app-bar>
     <v-app-bar
@@ -98,9 +98,9 @@
       <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
           class="mr-4"
-          v-if="isXs"
+          v-if="isXs && $props.route === '/'"
       />
-      <v-spacer></v-spacer>
+      <v-spacer v-if="isXs && $props.route === '/'"></v-spacer>
       <v-toolbar-title>
         <v-img src="@/assets/beeline/light.png" max-width="50px" />
       </v-toolbar-title>
@@ -115,7 +115,7 @@
         <span >Войти</span>
       </v-btn>
       <v-btn
-          v-else
+          v-if="$props.route !== '/'"
           elevation="0"
           class="my_btn"
           to="/"

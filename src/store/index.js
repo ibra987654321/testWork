@@ -9,6 +9,7 @@ import {environment} from "@/environments/environment";
 import {API, CANDIDATE_TYPE, USER} from "@/helpers/endPoints";
 import {setCandidateType, setId, setToken} from "@/helpers/helpers";
 import testing from "@/store/testing";
+import video from "@/store/video";
 
 Vue.use(Vuex);
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
             list: [],
             description: '',
             type: {
+                strong: false,
                 default: false,
                 login: false,
                 description: false,
@@ -86,11 +88,28 @@ export default new Vuex.Store({
                 }
             }).then(res => {
                 if (res.data.token) {
-                    commit('setIterator', res.data.index)
-                    setToken(res.data.token)
-                    setId(res.data.candidateId)
-                    setCandidateType(res.data.candidateTypeId)
-                    router.push({ name: res.data.stage })
+                    if (res.data.stage === 'completed') {
+                        state.modals.popup = true
+                        state.modals.type.withOutBtn = true
+                        state.modals.type.description = true
+                        state.modals.img = require('../assets/beeline/Candidate.png')
+                        state.modals.description = 'Еще раз спасибо, данные рекрутера'
+                        state.modals.title = 'Привет, Мадина!'
+                        state.modals.text = 'Спасибо за Ваш отклик на позицию "название" и "название компании". Я получил(а) Ваше резюме и уже внимательно его изучаю, так что волноваться не о чем. Я дам Вам обратную связь на Вашу почту в течение 48 часов.'
+                    } else if (res.data.stage === 'failed') {
+                        state.modals.popup = true
+                        state.modals.type.withOutBtn = true
+                        state.modals.img = require('../assets/beeline/failed.png')
+                        state.modals.title = 'Сожалеем,Вы не набрали проходной балл'
+                        state.modals.text = 'Никогда не отчаивайтесь. Если план "А" не сработал, у Вас есть еще 32 буквы, чтобы попробовать'
+                    } else {
+                        commit('setIterator', res.data.index)
+                        setToken(res.data.token)
+                        setId(res.data.candidateId)
+                        setCandidateType(res.data.candidateTypeId)
+                        router.push({ name: res.data.stage })
+                    }
+
                 }
             }).catch(e => {
                 state.loading = false
@@ -128,5 +147,6 @@ export default new Vuex.Store({
     modules: {
         profile,
         testing,
+        video
     }
 });

@@ -1,7 +1,9 @@
 <template>
   <v-dialog
       v-model="$store.state.modals.popup"
-      max-width="625"
+      :fullscreen="$vuetify.breakpoint.xs"
+      :persistent="$store.state.modals.type.strong"
+      max-width="655"
   >
     <v-card class="pb-5">
       <v-card-text class="d-flex pt-10 justify-center">

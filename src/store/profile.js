@@ -35,6 +35,8 @@ export default {
                 }
             }).then(res => {
                 store.rootState.modals.type.action = true
+                store.rootState.modals.type.withOutBtn = false
+                store.rootState.modals.type.description = false
                 store.rootState.modals.popup = true
                 store.rootState.modals.title = 'Подтверждение'
                 store.rootState.modals.text = `Мы отправили на почту код, подтвердите пожалуйста!`

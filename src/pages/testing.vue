@@ -1,23 +1,14 @@
 <template>
   <div id="bg" class="pt-16">
     <the-card title="Тестирование" path="Карьера в Beeline /Тестирование">
-      <h1>Вопрос {{questions[iterator].position}} из {{questions.length}}</h1>
+      <h1 class="text-center mb-7">Вопрос {{questions[iterator].position}} из {{questions.length}}</h1>
       <p class="font-weight-bold">{{ questions[iterator].questionText }}</p>
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column ">
         <div class="pl-4  mb-2 d-flex align-items-center" v-for="qu in questions[iterator].answers" :key="qu.id">
           <input type="radio" :id="qu.id" v-model="answers[questions[iterator].position -1]" :value="qu">
           <label class="mb-0 ml-2" :for="qu.id">{{qu.content}}</label>
         </div>
-<!--        <v-radio-group v-model="answers[questions[iterator].position -1]">-->
-<!--          <v-radio-->
-<!--              v-for="qu in questions[iterator].answers"-->
-
-<!--              :key="qu.id"-->
-<!--              :label="qu.content"-->
-<!--              :value="qu"-->
-<!--          ></v-radio>-->
-<!--        </v-radio-group>-->
-        <v-btn class="my_btn btn" @click="submit(questions[iterator].questionText, answers[questions[iterator].position -1], questions[iterator].key)">Далее</v-btn>
+        <v-btn class="my_btn btn mx-auto mt-7" @click="submit(questions[iterator].questionText, answers[questions[iterator].position -1], questions[iterator].key)">Далее</v-btn>
       </div>
     </the-card>
   </div>
@@ -40,7 +31,9 @@ export default {
     iterator: 0
   }),
   mounted() {
-    this.modals.popup = false
+    this.modals.popup = true
+    this.modals.type.default = true
+    this.modals.type.withRoute = false
     this.modals.img = require('../assets/beeline/Instruction.png')
     this.modals.title = 'Тестирование'
     this.modals.text = 'Без паники! Просто будьте внимательны, отвечая на вопросы'
@@ -70,15 +63,30 @@ export default {
         this.data.push(obj)
         this.iterator++
         if (this.iterator >= this.questions.length) {
-          console.log(this.data)
           this.$store.dispatch('sendAnswer', this.data)
-          // this.$store.dispatch('percentage').then(r => {
-          //   if (r >= 70) {
-          //     router.push({name: 'video'})
-          //   } else {
-          //     router.push({name: 'failed'})
-          //   }
-          // })
+           this.$store.dispatch('getStage').then(r => {
+             if (r.data === 'completed') {
+               this.modals.popup = true
+               this.modals.type.withRoute = true
+               this.modals.type.default = false
+               this.modals.route = r.data
+               this.modals.img = require('../assets/beeline/testSave.png')
+               this.modals.title = 'Поздравляем!'
+               this.modals.text = 'Вы успешно прошли тестирование. Следующий этап – наше знакомство с Вами'
+               this.modals.btnText = 'Приступить к видео интервью'
+             } else {
+               this.modals.popup = true
+               this.modals.type.withRoute = true
+               this.modals.type.default = false
+               this.modals.route = ''
+               this.modals.type.strong = true
+               this.modals.img = require('../assets/beeline/failed.png')
+               this.modals.title = 'Сожалеем,Вы не набрали проходной балл'
+               this.modals.text = 'Никогда не отчаивайтесь. Если план "А" не сработал, у Вас есть еще 32 буквы, чтобы попробовать'
+               this.modals.btnText = 'На главную'
+             }
+             this.$router.push({path: r.data})
+           })
         }
       } else {
         this.$store.state.snacks.snackbar = true

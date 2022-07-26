@@ -2,8 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import landing from "@/pages/landing";
 import Profile from "@/pages/Profile";
-import TheCard from "@/components/TheModels/TheCard";
 import testing from "@/pages/testing";
+import videos from "@/pages/video";
 
 Vue.use(Router);
 
@@ -17,13 +17,18 @@ const routes = [
     {
         path: "/profile",
         name: "profile",
-        components: { default: Profile, content: TheCard},
+        components: { default: Profile},
 
     },
     {
         path: "/testing",
         name: "testing",
         components: { default: testing },
+    },
+    {
+        path: "/video",
+        name: "video",
+        components: { default: videos },
     },
     // {
     //     path: "/profile",
