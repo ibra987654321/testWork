@@ -24,8 +24,8 @@ export default {
             })
                 .then(r => r)
                 .catch(e => {
-                    store.rootState.modals.popup = true
-                    store.rootState.modals.text = 'Произошла серверная ошибка'
+                    store.rootState.snacks.snackbar = true
+                    store.rootState.snacks.text = 'Произошла ошибка ' + e.message
                 })
         },
         getQuestions(store) {
@@ -37,7 +37,10 @@ export default {
                     Authorization: `Bearer_${getToken()}`,
                 },
             }).then(r => {
-                return  r.data
+                return r.data
+            }).catch(e => {
+                store.rootState.snacks.snackbar = true
+                store.rootState.snacks.text = 'Произошла ошибка ' + e.message
             })
 
             return questions

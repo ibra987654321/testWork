@@ -16,7 +16,10 @@ export default {
                     'Content-Type': 'application/json',
                 },
             }).then(r => r.data)
-
+                .catch(e => {
+                    store.rootState.snacks.snackbar = true
+                    store.rootState.snacks.text = 'Произошла ошибка ' + e.message
+                })
             return data
         },
         submitForm(store, payload) {
@@ -35,8 +38,11 @@ export default {
                 }
             }).then(res => {
                 store.rootState.modals.type.action = true
+                store.rootState.modals.type.withRoute = false
+                store.rootState.modals.type.default = false
                 store.rootState.modals.type.withOutBtn = false
                 store.rootState.modals.type.description = false
+                store.rootState.modals.type.withList = false
                 store.rootState.modals.popup = true
                 store.rootState.modals.title = 'Подтверждение'
                 store.rootState.modals.text = `Мы отправили на почту код, подтвердите пожалуйста!`
@@ -44,6 +50,9 @@ export default {
                 store.rootState.modals.img = require('../assets/beeline/save.png');
                 store.commit('setAction', navigate)
 
+            })    .catch(e => {
+                store.rootState.snacks.snackbar = true
+                store.rootState.snacks.text = 'Произошла ошибка ' + e.message
             })
         },
     },

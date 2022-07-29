@@ -19,7 +19,7 @@
         >
         </v-text-field>
         <v-text-field
-            label="Пароль"
+            label="Код"
             @click:append="() => (value = !value)"
             :type="value ? 'password' : 'text'"
             placeholder="**********"

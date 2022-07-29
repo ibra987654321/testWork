@@ -13,7 +13,7 @@ export default {
         }
     },
     actions: {
-        sendVideo(_, formData) {
+        sendVideo(store, formData) {
             const data = axios.post(`${environment.prodApi + API + VIDEO}/upload/${getId()}`,
                 formData,
                 {
@@ -23,6 +23,10 @@ export default {
                     },
                 }
             ).then(r => r.data)
+                .catch(e => {
+                    store.rootState.snacks.snackbar = true
+                    store.rootState.snacks.text = 'Произошла ошибка ' + e.message
+                })
             return data
         },
         getQuestion(store) {
@@ -36,11 +40,14 @@ export default {
             }).then(r => {
                 store.commit('setData', r.data)
                 return  r.data
+            })    .catch(e => {
+                store.rootState.snacks.snackbar = true
+                store.rootState.snacks.text = 'Произошла ошибка ' + e.message
             })
 
             return data
         },
-        getStage(store) {
+            getStage(store) {
             store.rootState.loading = true
             const data = axios(`${environment.prodApi + API + TEST}/stage/${getId()}`, {
                 method: 'GET',
@@ -50,6 +57,9 @@ export default {
                 },
             }).then(r => {
                 return  r.data
+            })    .catch(e => {
+                store.rootState.snacks.snackbar = true
+                store.rootState.snacks.text = 'Произошла ошибка ' + e.message
             })
 
             return data

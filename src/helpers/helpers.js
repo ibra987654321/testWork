@@ -33,3 +33,9 @@ export const parseJwt = (token) => {
 
     return JSON.parse(jsonPayload);
 }
+
+export const cleanLocal = () => {
+    removeId()
+    removeToken()
+    removeCandidateType()
+}

@@ -17,6 +17,7 @@
 <script>
 import TheCard from "@/components/TheModels/TheCard";
 import {mapState} from 'vuex'
+import {cleanLocal} from "@/helpers/helpers";
 export default {
   name: "testing",
   components: {
@@ -32,8 +33,12 @@ export default {
   }),
   mounted() {
     this.modals.popup = true
-    this.modals.type.default = true
+    this.modals.type.action = false
     this.modals.type.withRoute = false
+    this.modals.type.default = true
+    this.modals.type.withOutBtn = false
+    this.modals.type.description = false
+    this.modals.type.withList = false
     this.modals.img = require('../assets/beeline/Instruction.png')
     this.modals.title = 'Тестирование'
     this.modals.text = 'Без паники! Просто будьте внимательны, отвечая на вопросы'
@@ -65,27 +70,35 @@ export default {
         if (this.iterator >= this.questions.length) {
           this.$store.dispatch('sendAnswer', this.data)
            this.$store.dispatch('getStage').then(r => {
-             if (r.data === 'completed') {
+             if (r === 'video') {
                this.modals.popup = true
+               this.modals.type.action = false
                this.modals.type.withRoute = true
                this.modals.type.default = false
-               this.modals.route = r.data
+               this.modals.type.withOutBtn = false
+               this.modals.type.description = false
+               this.modals.type.withList = false
+               this.modals.route = r
                this.modals.img = require('../assets/beeline/testSave.png')
                this.modals.title = 'Поздравляем!'
                this.modals.text = 'Вы успешно прошли тестирование. Следующий этап – наше знакомство с Вами'
                this.modals.btnText = 'Приступить к видео интервью'
              } else {
                this.modals.popup = true
+               this.modals.type.action = false
                this.modals.type.withRoute = true
                this.modals.type.default = false
+               this.modals.type.withOutBtn = false
+               this.modals.type.description = false
+               this.modals.type.withList = false
                this.modals.route = ''
                this.modals.type.strong = true
                this.modals.img = require('../assets/beeline/failed.png')
                this.modals.title = 'Сожалеем,Вы не набрали проходной балл'
                this.modals.text = 'Никогда не отчаивайтесь. Если план "А" не сработал, у Вас есть еще 32 буквы, чтобы попробовать'
                this.modals.btnText = 'На главную'
+               cleanLocal()
              }
-             this.$router.push({path: r.data})
            })
         }
       } else {

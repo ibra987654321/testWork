@@ -6,8 +6,8 @@ import router from "@/router";
 // modules--------------
 import profile from "@/store/profile";
 import {environment} from "@/environments/environment";
-import {API, CANDIDATE_TYPE, USER} from "@/helpers/endPoints";
-import {setCandidateType, setId, setToken} from "@/helpers/helpers";
+import {API, CANDIDATE, CANDIDATE_TYPE, USER} from "@/helpers/endPoints";
+import {getId, setCandidateType, setId, setToken} from "@/helpers/helpers";
 import testing from "@/store/testing";
 import video from "@/store/video";
 
@@ -25,7 +25,9 @@ export default new Vuex.Store({
             text:'',
             btnText: '',
             route: '',
+            routeTitle: '',
             action: '',
+            actionTitle: '',
             list: [],
             description: '',
             type: {
@@ -43,6 +45,7 @@ export default new Vuex.Store({
             snackbar: false,
             text: ``,
         },
+        successData: '',
         candidateType: '',
         candidateId: '',
         iterator: 0
@@ -65,11 +68,14 @@ export default new Vuex.Store({
         },
         setIterator(state, count) {
             state.iterator = count
+        },
+        setSuccess(state, data) {
+            state.successData = data
         }
     },
     actions: {
         candidateType({commit}) {
-            const candidateTypes = axios(`${environment.prodApi + API + CANDIDATE_TYPE}/all`, {
+            const candidateTypes = axios(`${environment.prodApi + API + CANDIDATE_TYPE}/allActiveAndExternal`, {
                 method: 'GET',
             }).then(r => {
                 commit('setCandidate', r.data)
@@ -89,15 +95,30 @@ export default new Vuex.Store({
             }).then(res => {
                 if (res.data.token) {
                     if (res.data.stage === 'completed') {
-                        state.modals.popup = true
-                        state.modals.type.withOutBtn = true
-                        state.modals.type.description = true
-                        state.modals.img = require('../assets/beeline/Candidate.png')
-                        state.modals.description = 'Еще раз спасибо, данные рекрутера'
-                        state.modals.title = 'Привет, Мадина!'
-                        state.modals.text = 'Спасибо за Ваш отклик на позицию "название" и "название компании". Я получил(а) Ваше резюме и уже внимательно его изучаю, так что волноваться не о чем. Я дам Вам обратную связь на Вашу почту в течение 48 часов.'
+                       axios(`${environment.prodApi + API + CANDIDATE}/success/${res.data.candidateId}`, {
+                            method: 'GET',
+                        }).then(r => {
+                            state.modals.popup = true
+                            state.modals.type.default = false
+                            state.modals.type.action = false
+                            state.modals.type.withRoute = false
+                            state.modals.type.strong = false
+                            state.modals.type.description = false
+                            state.modals.type.withList = false
+                            state.modals.type.withOutBtn = true
+                            state.modals.img = require('../assets/beeline/Candidate.png')
+                            state.modals.description = 'Еще раз спасибо, данные рекрутера'
+                            state.modals.title = r.data.title
+                            state.modals.text = r.data.text
+                        })
                     } else if (res.data.stage === 'failed') {
                         state.modals.popup = true
+                        state.modals.type.default = false
+                        state.modals.type.action = false
+                        state.modals.type.withRoute = false
+                        state.modals.type.strong = false
+                        state.modals.type.description = false
+                        state.modals.type.withList = false
                         state.modals.type.withOutBtn = true
                         state.modals.img = require('../assets/beeline/failed.png')
                         state.modals.title = 'Сожалеем,Вы не набрали проходной балл'
@@ -114,7 +135,14 @@ export default new Vuex.Store({
             }).catch(e => {
                 state.loading = false
                 state.modals.popup = true
-                state.modals.type.withOutBtn = true
+                state.modals.btnText = "Вернуться назад"
+                state.modals.type.default = true
+                state.modals.type.action = false
+                state.modals.type.withRoute = false
+                state.modals.type.strong = false
+                state.modals.type.description = false
+                state.modals.type.withList = false
+                state.modals.type.withOutBtn = false
                 if (e.response.status === 403 || 401) {
                     state.modals.title = e.response.data
                 } else {
@@ -122,24 +150,13 @@ export default new Vuex.Store({
                 }
             })
         },
-        // knowledgeType() {
-        //     const knowledgeType = axios(`${environment.authAPI + API + KNOWLEDGE_TYPE}/all/${getCandidateType()}`, {
-        //         method: 'GET',
-        //     }).then(r => r.data)
-        //
-        //     return knowledgeType
-        // },
-        // percentage() {
-        //     const data = axios(`${environment.authAPI + API}/test/percentage/${getId()}`, {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer_${getToken()}`,
-        //         },
-        //     }).then(r => r.data)
-        //
-        //     return data
-        // }
+        getSuccess() {
+            const date = axios(`${environment.prodApi + API + CANDIDATE}/success/${getId()}`, {
+                method: 'GET',
+            }).then(r => r.data)
+
+            return date
+        },
     },
     getters: {
         error: state => state.error

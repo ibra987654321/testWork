@@ -47,48 +47,48 @@
         ></v-text-field>
       </v-col>
       <v-col
-          cols="12"
           md="2"
+          sm="3"
       >
         <v-select
-            v-model="form.birthday.day"
+            v-model="birthday.day"
             label="День"
             :items="day"
             :error-messages="dayErrors"
             outlined
             required
-            @input="$v.form.birthday.day.$touch()"
-            @blur="$v.form.birthday.day.$touch()"
+            @input="$v.birthday.day.$touch()"
+            @blur="$v.birthday.day.$touch()"
         ></v-select>
       </v-col>
       <v-col
-          cols="12"
           md="2"
+          sm="3"
       >
         <v-select
-            v-model="form.birthday.month"
+            v-model="birthday.month"
             label="Месяцы"
             :items="month"
             :error-messages="monthErrors"
             outlined
             required
-            @input="$v.form.birthday.month.$touch()"
-            @blur="$v.form.birthday.month.$touch()"
+            @input="$v.birthday.month.$touch()"
+            @blur="$v.birthday.month.$touch()"
         ></v-select>
       </v-col>
       <v-col
-          cols="12"
           md="2"
+          sm="3"
       >
         <v-select
-            v-model="form.birthday.year"
+            v-model="birthday.year"
             label="Годы"
             :items="year"
             :error-messages="yearErrors"
             outlined
             required
-            @input="$v.form.birthday.year.$touch()"
-            @blur="$v.form.birthday.year.$touch()"
+            @input="$v.birthday.year.$touch()"
+            @blur="$v.birthday.year.$touch()"
         ></v-select>
       </v-col>
       <v-col
@@ -322,8 +322,8 @@
         md="12"
         class="d-flex justify-center"
       >
-        <v-btn class=" my_btn btn" @click="submits">
-          Отправить
+        <v-btn :disabled="disable" class=" my_btn btn" @click="submits">
+          {{disable ? `Повторно отправить 0:${countDown < 10 ? '0' : ''}${countDown}` : 'Отправить'}}
         </v-btn>
       </v-col>
     </v-row>
@@ -339,23 +339,17 @@ export default {
   name: "CustomProfile",
   validations: {
     experience: {required},
+    birthday: {
+      day: {required},
+      month: {required},
+      year: {required},
+    },
     form: {
       name: {required, minLength: minLength(3)},
       surname: {required, minLength: minLength(3)},
       phoneNumber: {required, numeric},
       email: {required, email},
       citizenship: {required},
-      birthday: {
-        day: {required},
-        month: {required},
-        year: {required},
-      },
-      // experience: {
-      //   name: {required},
-      //   startDate: {required},
-      //   endDate: {required},
-      //   position: {required}
-      // },
       education: {required},
       schedule: {required},
       address: {required},
@@ -373,6 +367,13 @@ export default {
     answers: [],
     picked: [],
     experience: '',
+    disable: false,
+    countDown: 10,
+    birthday: {
+      day: 1,
+      month: 7,
+      year: 1997,
+    },
     form: {
       name: "Ибрагим",
       surname: "Орозобаев",
@@ -476,20 +477,20 @@ export default {
     },
     dayErrors () {
       const errors = []
-      if (!this.$v.form.birthday.day.$dirty) return errors
-      !this.$v.form.birthday.day.required && errors.push('Поле не должно быть пустым')
+      if (!this.$v.birthday.day.$dirty) return errors
+      !this.$v.birthday.day.required && errors.push('Поле не должно быть пустым')
       return errors
     },
     monthErrors () {
       const errors = []
-      if (!this.$v.form.birthday.month.$dirty) return errors
-      !this.$v.form.birthday.month.required && errors.push('Поле не должно быть пустым')
+      if (!this.$v.birthday.month.$dirty) return errors
+      !this.$v.birthday.month.required && errors.push('Поле не должно быть пустым')
       return errors
     },
     yearErrors () {
       const errors = []
-      if (!this.$v.form.birthday.year.$dirty) return errors
-      !this.$v.form.birthday.year.required && errors.push('Поле не должно быть пустым')
+      if (!this.$v.birthday.year.$dirty) return errors
+      !this.$v.birthday.year.required && errors.push('Поле не должно быть пустым')
       return errors
     },
     day() {
@@ -531,12 +532,25 @@ export default {
       }
       return arr
     },
+    countDownTimer() {
+      if(this.countDown > 0) {
+        this.disable = true
+        setTimeout(() => {
+          this.countDown -= 1
+          this.countDownTimer()
+        }, 1000)
+      } else if (this.countDown === 0) {
+        this.countDown = 10
+        this.disable = false
+      }
+    },
     submits () {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
-      const date = new Date(this.form.birthday.year,this.form.birthday.month -1,  this.form.birthday.day  )
+      this.countDownTimer()
+      const date = new Date(this.birthday.year,this.birthday.month -1,  this.birthday.day  )
       this.form.birthday = date.toISOString()
       this.answers = this.answers.filter(i => typeof (i) !== 'null')
       const result = this.names.map(item2 => {
