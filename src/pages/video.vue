@@ -23,6 +23,7 @@
               ref="preview"
               autoplay
               class="video"
+              muted
           ></video>
           <div
               class="d-flex justify-center text_width"
@@ -32,13 +33,13 @@
           <div class="d-flex justify-center align-center flex-column">
             <v-chip  v-if="start && !setTimeOut" outlined class="mb-5 v-chip">{{ countDown }}</v-chip>
 
-            <v-btn
-                v-show="start && !setTimeOut"
-                class="my_btn btn "
-                @click="stop($refs.preview.captureStream())"
-            >
-              Стоп
-            </v-btn>
+<!--            <v-btn-->
+<!--                v-show="start && !setTimeOut"-->
+<!--                class="my_btn btn "-->
+<!--                @click="stop($refs.preview.captureStream())"-->
+<!--            >-->
+<!--              Стоп-->
+<!--            </v-btn>-->
             <v-btn
                 class="my_btn btn "
                 v-if="!start"
@@ -46,13 +47,12 @@
             >
               Начать
             </v-btn>
-
           </div>
         </div>
         <div v-show="!recording" class="col-lg-12 text_width mx-auto">
           <video class="video" crossorigin playsinline ref="recording" controls></video>
-          <div class="d-flex justify-md-space-around  mt-7">
-            <v-btn class=" btn1 " @click="recording = true" >
+          <div class="d-flex  mt-7" :class="$vuetify.breakpoint.xs ? 'flex-column align-center' : 'justify-md-space-around'">
+            <v-btn class=" btn1 mb-5" @click="recording = true" >
               Переснять
             </v-btn >
             <v-btn
@@ -85,8 +85,8 @@ export default {
     preview: false,
     videoUrl: '',
     iterator: 0,
-    countDown : 5,
-    recordingTimeMS: 5000,
+    countDown : 4,
+    recordingTimeMS: '',
     questions: [],
     doneCard: false,
     blob: ''
@@ -103,20 +103,16 @@ export default {
     this.iterator = this.$store.state.iterator
   },
    mounted() {
-    // setTimeout(() => {
-    //   this.modal()
-    // },200)
+    setTimeout(() => {
+      this.modal()
+    },200)
     this.$store.dispatch('getQuestion').then(r => {
       this.questions = r
+      this.countDown = this.questions[this.iterator].milliseconds / 1000
     })
-    this.countDown = this.questions[this.iterator].milliseconds / 1000
   },
   computed: {
     ...mapState(['modals']),
-    msController() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.countDown = this.questions[this.iterator].milliseconds / 1000
-    }
   },
   methods: {
     countDownTimer() {
@@ -126,11 +122,14 @@ export default {
           this.countDownTimer()
         }, 1000)
       } else if (this.countDown === 0) {
+        this.recording = false
         this.countDown = this.questions[this.iterator].milliseconds / 1000
       }
     },
     wait(delayInMS) {
-      return new Promise((resolve) => setTimeout(resolve, delayInMS));
+      return new Promise((resolve) => {
+        setTimeout(resolve, delayInMS)
+      });
     },
     startRecording(stream, lengthInMS) {
       this.countDownTimer()
@@ -142,12 +141,11 @@ export default {
         recorder.onstop = resolve;
         recorder.onerror = event => reject(event.name);
       });
-      // let recorded = this.wait(lengthInMS).then(
-      //     () => recorder.state == "recording" && recorder.stop()
-      // ).catch()
-      let recorded = function () {
-       return setTimeout(() => {recorder.state == "recording" && recorder.stop()}, lengthInMS)
-      }
+      let recorded = this.wait(lengthInMS).then(
+          () => {
+            recorder.state == "recording" && recorder.stop()
+          }
+      )
       return Promise.all([
         stopped,
         recorded
@@ -176,7 +174,6 @@ export default {
               let recordedBlob = new Blob(recordedChunks, { type: "video/mp4" });
               this.videoUrl = URL.createObjectURL(recordedBlob);
               this.blob = recordedBlob
-              this.recording = false
               this.start = false
               this.setTimeOut = false
               this.$refs.recording.src = URL.createObjectURL(recordedBlob);
@@ -267,6 +264,9 @@ export default {
 .video {
   height: 545px;
   border-radius: 12px;
+}
+.video_img {
+  width: 100%;
 }
 .v-chip {
   height: 100%;

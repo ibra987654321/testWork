@@ -2,7 +2,10 @@
   <div>
     <v-row>
       <v-col cols="12">
-        <h2 class="title_1">Заполните информацию</h2>
+        <h2 class="title_1"></h2>
+      </v-col>
+      <v-col cols="12">
+        <h1>Заполните информацию</h1>
       </v-col>
       <v-col
           cols="12"
@@ -317,6 +320,16 @@
         </div>
 
       </v-col>
+      <v-col cols="12">
+        <form action="#" id="my_captcha_form">
+          <div class="g-recaptcha"
+               data-sitekey="6LeUdzkhAAAAAGVdLLTEzyLkAmvmDPhPsfkYJyVZ"
+          ></div>
+        </form>
+        <form action="#" id="my_captcha">
+
+        </form>
+      </v-col>
       <v-col
         cols="12"
         md="12"
@@ -370,31 +383,32 @@ export default {
     disable: false,
     countDown: 10,
     birthday: {
-      day: 1,
-      month: 7,
-      year: 1997,
+      day: '',
+      month: '',
+      year: '',
     },
     form: {
-      name: "Ибрагим",
-      surname: "Орозобаев",
-      phoneNumber: "703215487",
-      email: "ibragimmadiyarov@gmail.com",
-      citizenship: "Кыргыз",
+      name: "",
+      surname: "",
+      phoneNumber: "",
+      email: "",
+      citizenship: "",
       birthday: {
-        day: 1,
-        month: 7,
-        year: 1997,
+        day: '',
+        month: '',
+        year: '',
       },
       experience: {
-        name: "Разраб",
+        name: "",
         startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        position: "разраб"
+        position: ""
       },
       education: "",
       questionnaireList: [],
       schedule: "",
-      address: "Бишкек",
+      address: "",
+      recaptcha: '',
       candidateType_id:  Number(getCandidateType()),
     }
   }),
@@ -514,6 +528,15 @@ export default {
     }
   },
   mounted() {
+    setTimeout(()=> {
+      console.log(grecaptcha)
+      grecaptcha.ready(() => {
+        grecaptcha.render('my_captcha', {
+          'sitekey' : '6LeUdzkhAAAAAGVdLLTEzyLkAmvmDPhPsfkYJyVZ'
+        });
+      }, 200);
+    })
+
     this.$store.dispatch('getKnowledge').then(r => {
       this.knowledgeType = r
       r.map((i, idx) => {
@@ -560,6 +583,7 @@ export default {
         item2.questionnaireAnswers.push(...withCurrentId)
         return { ...item2 };
       });
+      this.form.recaptcha = grecaptcha.getResponse()
       const newResult = result.map(i => {
         return {
           name: i.name,

@@ -9,7 +9,6 @@
       <instruction />
       <FAQ/>
     </v-main>
-
     <foote />
   </div>
 </template>
@@ -23,6 +22,7 @@ import team from "../components/Team";
 import instruction from "../components/Instruction";
 import vacancy from "@/components/Vacancy";
 import FAQ from "@/components/FAQ";
+
 export default {
   name: "landing",
   components: {
@@ -33,11 +33,15 @@ export default {
     team,
     instruction,
     vacancy,
-    FAQ
+    FAQ,
   },
   data: () => ({
-
   }),
+  mounted() {
+    if (this.$router.currentRoute.query.login) {
+      this.$store.state.modals.type.login = this.$router.currentRoute.query.login
+    }
+  },
 
 }
 </script>

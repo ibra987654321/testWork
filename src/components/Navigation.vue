@@ -43,7 +43,9 @@
       :class="{ expand: flat }"
     >
       <v-toolbar-title>
-        <v-img src="@/assets/beeline/light.png" max-width="50px" />
+        <v-btn text to="/" color="white">
+          <v-img src="@/assets/beeline/light.png" max-width="50px" />
+        </v-btn>
       </v-toolbar-title>
       <div v-if="$props.route === '/'">
         <v-btn text @click="$vuetify.goTo('#about')">

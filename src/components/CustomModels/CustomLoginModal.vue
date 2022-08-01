@@ -43,6 +43,7 @@
 </template>
 
 <script>
+// http://localhost:8081/#/?email=ibragimmadiyarov@gmail.com&login=true
 import {email, required} from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 export default {
@@ -61,6 +62,11 @@ export default {
       password: ''
     }
   }),
+  mounted() {
+    if (this.$router.currentRoute.query.email) {
+      this.form.username = this.$router.currentRoute.query.email
+    }
+  },
   computed: {
     userError() {
       const errors = []
