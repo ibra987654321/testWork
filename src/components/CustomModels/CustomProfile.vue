@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col cols="12">
-        <h2 class="title_1"></h2>
+        <h1 class="">{{candidateName}}</h1>
       </v-col>
       <v-col cols="12">
         <h1>Заполните информацию</h1>
@@ -320,14 +320,8 @@
         </div>
 
       </v-col>
-      <v-col cols="12">
-        <form action="#" id="my_captcha_form">
-          <div class="g-recaptcha"
-               data-sitekey="6LeUdzkhAAAAAGVdLLTEzyLkAmvmDPhPsfkYJyVZ"
-          ></div>
-        </form>
+      <v-col cols="12" class="d-flex justify-center">
         <form action="#" id="my_captcha">
-
         </form>
       </v-col>
       <v-col
@@ -371,6 +365,7 @@ export default {
   components: {
   },
   data: () => ({
+    candidateName: '',
     menu: false,
     menu1: false,
     educations: ['среднее общее', 'среднее профессиональное', 'незаконченное высшее', 'высшее'],
@@ -528,8 +523,10 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch('getName').then(r => {
+      this.candidateName = r.candidateType
+    })
     setTimeout(()=> {
-      console.log(grecaptcha)
       grecaptcha.ready(() => {
         grecaptcha.render('my_captcha', {
           'sitekey' : '6LeUdzkhAAAAAGVdLLTEzyLkAmvmDPhPsfkYJyVZ'
@@ -570,6 +567,11 @@ export default {
     submits () {
       if (this.$v.$invalid) {
         this.$v.$touch();
+        return;
+      }
+      if (!grecaptcha.getResponse()) {
+        this.$store.state.snacks.snackbar = true
+        this.$store.state.snacks.text = "Поставьте флажок на капчу"
         return;
       }
       this.countDownTimer()

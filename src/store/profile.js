@@ -1,8 +1,7 @@
 import axios from "axios";
 import { environment } from '@/environments/environment'
-import {API, KNOWLEDGE_TYPE} from "@/helpers/endPoints";
+import {API, CANDIDATE_TYPE, KNOWLEDGE_TYPE} from "@/helpers/endPoints";
 import {getCandidateType} from "@/helpers/helpers";
-import router from "@/router";
 export default {
     state: {
 
@@ -54,6 +53,13 @@ export default {
                 store.rootState.snacks.snackbar = true
                 store.rootState.snacks.text = 'Произошла ошибка ' + e.message
             })
+        },
+        getName() {
+            const date = axios(`${environment.prodApi + API + CANDIDATE_TYPE}/nameById/${getCandidateType()}`, {
+                method: 'GET',
+            }).then(r => r.data)
+
+            return date
         },
     },
 }
