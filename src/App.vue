@@ -2,9 +2,6 @@
   <v-app id="app">
     <navigation :route="$router.currentRoute.path" :color="color" :flat="flat" />
     <router-view />
-    <ThePopup/>
-    <CustomLoginModal/>
-    <TheSnackbar/>
     <v-scale-transition>
       <v-btn
           fab
@@ -22,29 +19,43 @@
   </v-app>
 </template>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700&family=Poppins&display=swap');
 #app {
-  font-family: 'Fira Sans', sans-serif;
-  color: #000000 !important;
+  font-family: 'Montserrat', sans-serif;
+}
+.w-100 {
+  width: 100%;
+}
+.fz12 {
+  font-size: 12px!important;
+}
+.fz14 {
+  font-size: 14px !important;
+}
+.fz15 {
+  font-size: 15px !important;
+}
+.fz16 {
+  font-size: 16px !important;
+}
+.fz17 {
+  font-size: 17px !important;
+}
+.fz18 {
+  font-size: 18px !important;
 }
 
 </style>
 
 <script>
 import navigation from "./components/Navigation";
-import ThePopup from "@/components/TheModels/ThePopup";
-import CustomLoginModal from "@/components/CustomModels/CustomLoginModal";
-import TheSnackbar from "@/components/TheModels/TheSnackbar";
 
 export default {
   name: "App",
 
   components: {
     navigation,
-    ThePopup,
-    CustomLoginModal,
-    TheSnackbar
   },
 
   data: () => ({

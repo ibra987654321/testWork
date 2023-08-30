@@ -1,39 +1,178 @@
 <template>
-  <div>
+  <div class="header">
+<!--    mobile navigation container-->
     <v-navigation-drawer
         v-if="$props.route === '/'"
       v-model="drawer"
       app
       temporary
+        width="100%"
+        class="px-6 py-10"
     >
-      <v-list>
-        <v-list-item>
-          <v-list-item-avatar>
-            <img src="@/assets/beeline/light.png" alt="Logo" />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title class="title">Beeline Kg</v-list-item-title>
-            <v-list-item-subtitle>Рекрутинг</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-
-      <v-divider  />
-
+      <div class=" d-flex justify-space-between align-center">
+        <div class="mobile_logo">
+          <img src="@/assets/Логотип.png" alt="Logo" />
+        </div>
+        <div>
+          <v-btn
+              color="accent"
+              fab
+              small
+              elevation="0"
+              class="px-2 py-2"
+              @click="drawer = !drawer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 14 14" fill="none">
+              <g clip-path="url(#clip0_54_646)">
+                <path d="M1.13452 13.8744C1.00896 13.8744 0.886208 13.8372 0.781799 13.7674C0.677391 13.6977 0.596013 13.5986 0.547959 13.4825C0.499906 13.3665 0.487335 13.2389 0.511837 13.1157C0.53634 12.9926 0.596814 12.8795 0.685612 12.7907L12.4161 1.06024C12.5351 0.941184 12.6966 0.874298 12.865 0.874298C13.0334 0.874298 13.1948 0.941184 13.3139 1.06024C13.433 1.1793 13.4998 1.34078 13.4998 1.50915C13.4998 1.67752 13.433 1.839 13.3139 1.95805L1.58342 13.6885C1.52453 13.7475 1.45455 13.7943 1.37751 13.8262C1.30048 13.8581 1.2179 13.8745 1.13452 13.8744Z" fill="#959595"/>
+                <path d="M12.8652 13.8744C12.7818 13.8745 12.6992 13.8581 12.6222 13.8262C12.5452 13.7943 12.4752 13.7475 12.4163 13.6885L0.685821 1.95805C0.566764 1.839 0.499878 1.67752 0.499878 1.50915C0.499878 1.34078 0.566764 1.1793 0.685821 1.06024C0.804878 0.941184 0.966355 0.874298 1.13473 0.874298C1.3031 0.874298 1.46458 0.941184 1.58363 1.06024L13.3141 12.7907C13.4029 12.8795 13.4634 12.9926 13.4879 13.1157C13.5124 13.2389 13.4998 13.3665 13.4518 13.4825C13.4037 13.5986 13.3223 13.6977 13.2179 13.7674C13.1135 13.8372 12.9908 13.8744 12.8652 13.8744Z" fill="#959595"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_54_646">
+                  <rect width="13" height="13" fill="white" transform="translate(0.5 0.874512)"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </v-btn>
+        </div>
+      </div>
+      <div class=" d-flex justify-space-between align-center mt-10">
+        <div class="text-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  color="primary"
+                  rounded
+                  elevation="0"
+                  v-bind="attrs"
+                  v-on="on"
+                  style="color: black"
+                  class="py-5 font-weight-bold"
+              >
+                Направления
+                <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="8" height="9" viewBox="0 0 8 9" fill="none">
+                  <path d="M3.99998 6.717C3.8566 6.717 3.71324 6.66102 3.60393 6.54929L0.164113 3.03155C-0.0547044 2.80778 -0.0547044 2.44497 0.164113 2.22129C0.382842 1.99761 0.737546 1.99761 0.956381 2.22129L3.99998 5.33398L7.04359 2.2214C7.26241 1.99772 7.61708 1.99772 7.83579 2.2214C8.05471 2.44508 8.05471 2.80789 7.83579 3.03166L4.39602 6.5494C4.28666 6.66115 4.1433 6.717 3.99998 6.717Z" fill="#252525"/>
+                </svg>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                  v-for="(item, index) in list"
+                  :key="index"
+              >
+                <v-list-item-title>{{ item }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+        <v-btn
+            elevation="0"
+            color="accent"
+            rounded
+            class="fz12 py-6 font-weight-bold"
+            style="color: black"
+        >
+          <span >Войти</span>
+        </v-btn>
+      </div>
+      <div class="main_search mt-5">
+        <v-text-field
+          rounded
+          label="Поиск"
+          full-width
+          hide-details
+          background-color="accent"
+        >
+          <template #append >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <g clip-path="url(#clip0_54_700)">
+                <path d="M17.8295 17.0207L13.1821 12.4477C14.3991 11.1255 15.1469 9.37682 15.1469 7.45261C15.1463 3.33639 11.7559 0 7.57327 0C3.39066 0 0.000244141 3.33639 0.000244141 7.45261C0.000244141 11.5688 3.39066 14.9052 7.57327 14.9052C9.38044 14.9052 11.0379 14.2802 12.3399 13.241L17.0052 17.832C17.2326 18.056 17.6016 18.056 17.8289 17.832C18.0568 17.6081 18.0568 17.2447 17.8295 17.0207ZM7.57327 13.7586C4.03433 13.7586 1.16546 10.9353 1.16546 7.45261C1.16546 3.96991 4.03433 1.14663 7.57327 1.14663C11.1122 1.14663 13.9811 3.96991 13.9811 7.45261C13.9811 10.9353 11.1122 13.7586 7.57327 13.7586Z" fill="#959595"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_54_700">
+                  <rect width="18" height="18" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </template>
+        </v-text-field>
+      </div>
       <v-list  dense>
         <v-list-item
-          v-for="([icon, text, link], i) in items"
+          v-for="([ text, link], i) in items"
           :key="i"
           link
           @click="$vuetify.goTo(link), drawer = !drawer"
+          class="px-0"
         >
           <v-list-item-content>
-            <v-list-item-title class="subtitile-1">{{text}}</v-list-item-title>
+            <v-list-item-title style="font-size: 18px; color: black" class="subtitile-1 mb-4">{{text}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
 
+      <div class="feedback">
+        <v-card elevation="0">
+          <v-card-text style="font-size: 20px; color: black" class="pb-0 px-0">Мы на связи с 09:00 до 21:00 мск</v-card-text>
+          <v-card-text class="px-0 py-5 d-flex justify-space-between">
+            <v-btn style="background-color: #4CAF50;" dark rounded elevation="0" class="py-6 px-5">
+              <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <g clip-path="url(#clip0_35_55)">
+                  <path d="M12.4247 0.883179H12.4189C6.07813 0.883179 0.921814 6.04093 0.921814 12.3832C0.921814 14.8988 1.73256 17.2304 3.11113 19.1236L1.67794 23.3959L6.09825 21.9828C7.91669 23.1874 10.0859 23.8832 12.4247 23.8832C18.7655 23.8832 23.9218 18.724 23.9218 12.3832C23.9218 6.04237 18.7655 0.883179 12.4247 0.883179ZM19.1163 17.1226C18.8388 17.9061 17.7377 18.5558 16.8594 18.7456C16.2585 18.8735 15.4736 18.9756 12.8315 17.8802C9.45194 16.4801 7.27556 13.0459 7.10594 12.8231C6.9435 12.6002 5.74031 11.0046 5.74031 9.35437C5.74031 7.70412 6.57838 6.90055 6.91619 6.55555C7.19363 6.27237 7.65219 6.14299 8.09206 6.14299C8.23438 6.14299 8.36231 6.15018 8.47731 6.15593C8.81513 6.1703 8.98475 6.19043 9.20756 6.72374C9.485 7.39218 10.1606 9.04243 10.2411 9.21205C10.3231 9.38168 10.405 9.61168 10.29 9.83449C10.1822 10.0645 10.0873 10.1666 9.91769 10.3621C9.74806 10.5576 9.58706 10.7071 9.41744 10.9169C9.26219 11.0995 9.08681 11.295 9.28231 11.6328C9.47781 11.9634 10.1534 13.066 11.1482 13.9515C12.4319 15.0943 13.4726 15.4594 13.8449 15.6147C14.1224 15.7297 14.453 15.7024 14.6557 15.4867C14.913 15.2093 15.2307 14.7493 15.5541 14.2965C15.7841 13.9716 16.0745 13.9314 16.3793 14.0464C16.6898 14.1542 18.3328 14.9664 18.6706 15.1346C19.0084 15.3042 19.2313 15.3847 19.3132 15.527C19.3937 15.6693 19.3937 16.3377 19.1163 17.1226Z" fill="white"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_55">
+                    <rect width="23" height="23" fill="white" transform="translate(0.921814 0.883179)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              WhatsApp</v-btn>
+            <v-btn style="background-color: #039BE5;" dark rounded elevation="0" class="py-6 px-6">
+              <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                <g clip-path="url(#clip0_35_90)">
+                  <path d="M7.45513 12.0183L7.14084 16.439C7.5905 16.439 7.78525 16.2458 8.01879 16.0138L10.127 13.999L14.4954 17.1982C15.2966 17.6447 15.861 17.4095 16.0772 16.4611L18.9446 3.02495L18.9454 3.02416C19.1995 1.83983 18.5171 1.3767 17.7365 1.66725L0.88192 8.12012C-0.268371 8.56662 -0.250955 9.20787 0.686378 9.49841L4.99542 10.8387L15.0045 4.57583C15.4755 4.26391 15.9038 4.4365 15.5515 4.74841L7.45513 12.0183Z" fill="white"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_90">
+                    <rect width="19" height="19" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              Telegram</v-btn>
+          </v-card-text>
+          <v-card-text class="d-flex justify-space-between pt-0 px-0 fz14">
+            <div>
+              <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <g clip-path="url(#clip0_35_93)">
+                  <path d="M12.8766 8.67887C12.0195 8.67887 11.1779 8.55226 10.3804 8.30335C9.98958 8.17746 9.50917 8.29295 9.27066 8.5243L7.6965 9.64661C5.87092 8.72625 4.7464 7.66455 3.78521 5.95334L4.93857 4.50537C5.23822 4.22274 5.3457 3.80989 5.21693 3.42252C4.95225 2.66535 4.81779 1.87088 4.81779 1.06101C4.81782 0.475966 4.31386 0 3.69443 0H1.12339C0.503964 0 0 0.475966 0 1.06098C0 7.76678 5.77639 13.2222 12.8766 13.2222C13.4961 13.2222 14 12.7463 14 12.1612V9.73982C14 9.15484 13.496 8.67887 12.8766 8.67887Z" fill="black"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_93">
+                    <rect width="14" height="13.2222" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              +7 (495) 123-45-67
+            </div>
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+                <g clip-path="url(#clip0_35_119)">
+                  <path d="M7.00287 6.7395C6.70432 6.92194 6.35754 7.01839 6 7.01839C5.64248 7.01839 5.2957 6.92194 4.99716 6.7395L0.0798984 3.73441C0.0526172 3.71774 0.0260391 3.70036 0 3.68249V8.60664C0 9.17121 0.499805 9.61926 1.10468 9.61926H10.8953C11.5112 9.61926 12 9.16111 12 8.60664V3.68246C11.9739 3.70038 11.9473 3.71781 11.9199 3.7345L7.00287 6.7395Z" fill="black"/>
+                  <path d="M0.469922 3.19811L5.38718 6.20322C5.57332 6.31698 5.78665 6.37385 5.99998 6.37385C6.21333 6.37385 6.42668 6.31696 6.61282 6.20322L11.5301 3.19811C11.8243 3.0184 12 2.71762 12 2.39299C12 1.8348 11.5046 1.38071 10.8957 1.38071H1.1043C0.495398 1.38073 0 1.83482 0 2.39352C0 2.71762 0.175687 3.0184 0.469922 3.19811Z" fill="black"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_119">
+                    <rect width="12" height="11" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+              hello@trevelme.ru
+            </div>
+          </v-card-text>
+        </v-card>
+      </div>
+    </v-navigation-drawer>
+<!--      desktop navigator-->
     <v-app-bar
         v-if="!$vuetify.breakpoint.xs"
       app
@@ -44,91 +183,210 @@
     >
       <v-toolbar-title>
         <v-btn text to="/" color="white">
-          <v-img src="@/assets/beeline/light.png" max-width="50px" />
+          <v-img src="@/assets/Логотип.png"  />
         </v-btn>
       </v-toolbar-title>
-      <div v-if="$props.route === '/'">
+      <div  class="d-flex align-center">
+        <div class="text-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  color="primary"
+                  rounded
+                  elevation="0"
+                  v-bind="attrs"
+                  v-on="on"
+                  style="color: black; "
+                  class="py-5 px-5"
+              >
+                Направления
+                <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="8" height="9" viewBox="0 0 8 9" fill="none">
+                  <path d="M3.99998 6.717C3.8566 6.717 3.71324 6.66102 3.60393 6.54929L0.164113 3.03155C-0.0547044 2.80778 -0.0547044 2.44497 0.164113 2.22129C0.382842 1.99761 0.737546 1.99761 0.956381 2.22129L3.99998 5.33398L7.04359 2.2214C7.26241 1.99772 7.61708 1.99772 7.83579 2.2214C8.05471 2.44508 8.05471 2.80789 7.83579 3.03166L4.39602 6.5494C4.28666 6.66115 4.1433 6.717 3.99998 6.717Z" fill="#252525"/>
+                </svg>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                  v-for="(item, index) in list"
+                  :key="index"
+              >
+                <v-list-item-title>{{ item }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
         <v-btn text @click="$vuetify.goTo('#about')">
-          <span class="mr-2 ">О нас</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#advantage')">
-          <span class="mr-2">Наши преимущества</span>
+          <span class="mr-2">О сервисе</span>
         </v-btn>
         <v-btn text @click="$vuetify.goTo('#team')">
-          <span class="mr-2">Beeline Team</span>
+          <span class="mr-2">Блог</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#instruction')">
-          <span class="mr-2">Кондидатам</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#instruction')">
-          <span class="mr-2">Инструкция</span>
-        </v-btn>
-        <v-btn text @click="$vuetify.goTo('#FAQ')">
-          <span class="mr-2">FAQ</span>
-        </v-btn>
+        <div class=" helpers text-center">
+          <v-menu offset-y  class="elevation-0 ">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  text
+                  elevation="0"
+                  v-bind="attrs"
+                  v-on="on"
+              >
+                Помощь клиентам
+                <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="8" height="9" viewBox="0 0 8 9" fill="none">
+                  <path d="M3.99998 6.717C3.8566 6.717 3.71324 6.66102 3.60393 6.54929L0.164113 3.03155C-0.0547044 2.80778 -0.0547044 2.44497 0.164113 2.22129C0.382842 1.99761 0.737546 1.99761 0.956381 2.22129L3.99998 5.33398L7.04359 2.2214C7.26241 1.99772 7.61708 1.99772 7.83579 2.2214C8.05471 2.44508 8.05471 2.80789 7.83579 3.03166L4.39602 6.5494C4.28666 6.66115 4.1433 6.717 3.99998 6.717Z" fill="#252525"/>
+                </svg>
+              </v-btn>
+            </template>
+           <v-card >
+             <v-card-text style="font-size: 15px;" class="pb-0">Мы на связи с 09:00 до 21:00 мск</v-card-text>
+             <v-card-text>
+               <v-btn style="background-color: #4CAF50;" dark rounded elevation="0" class="py-6 px-5 mr-3">
+                 <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                   <g clip-path="url(#clip0_35_555)">
+                     <path d="M12.4247 0.883179H12.4189C6.07813 0.883179 0.921814 6.04093 0.921814 12.3832C0.921814 14.8988 1.73256 17.2304 3.11113 19.1236L1.67794 23.3959L6.09825 21.9828C7.91669 23.1874 10.0859 23.8832 12.4247 23.8832C18.7655 23.8832 23.9218 18.724 23.9218 12.3832C23.9218 6.04237 18.7655 0.883179 12.4247 0.883179ZM19.1163 17.1226C18.8388 17.9061 17.7377 18.5558 16.8594 18.7456C16.2585 18.8735 15.4736 18.9756 12.8315 17.8802C9.45194 16.4801 7.27556 13.0459 7.10594 12.8231C6.9435 12.6002 5.74031 11.0046 5.74031 9.35437C5.74031 7.70412 6.57838 6.90055 6.91619 6.55555C7.19363 6.27237 7.65219 6.14299 8.09206 6.14299C8.23438 6.14299 8.36231 6.15018 8.47731 6.15593C8.81513 6.1703 8.98475 6.19043 9.20756 6.72374C9.485 7.39218 10.1606 9.04243 10.2411 9.21205C10.3231 9.38168 10.405 9.61168 10.29 9.83449C10.1822 10.0645 10.0873 10.1666 9.91769 10.3621C9.74806 10.5576 9.58706 10.7071 9.41744 10.9169C9.26219 11.0995 9.08681 11.295 9.28231 11.6328C9.47781 11.9634 10.1534 13.066 11.1482 13.9515C12.4319 15.0943 13.4726 15.4594 13.8449 15.6147C14.1224 15.7297 14.453 15.7024 14.6557 15.4867C14.913 15.2093 15.2307 14.7493 15.5541 14.2965C15.7841 13.9716 16.0745 13.9314 16.3793 14.0464C16.6898 14.1542 18.3328 14.9664 18.6706 15.1346C19.0084 15.3042 19.2313 15.3847 19.3132 15.527C19.3937 15.6693 19.3937 16.3377 19.1163 17.1226Z" fill="white"/>
+                   </g>
+                   <defs>
+                     <clipPath id="clip0_35_555">
+                       <rect width="23" height="23" fill="white" transform="translate(0.921814 0.883179)"/>
+                     </clipPath>
+                   </defs>
+                 </svg>
+                 WhatsApp</v-btn>
+               <v-btn style="background-color: #039BE5;" dark rounded elevation="0" class="py-6 px-7">
+                 <svg class="mr-4" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                   <g clip-path="url(#clip0_35_905)">
+                     <path d="M7.45513 12.0183L7.14084 16.439C7.5905 16.439 7.78525 16.2458 8.01879 16.0138L10.127 13.999L14.4954 17.1982C15.2966 17.6447 15.861 17.4095 16.0772 16.4611L18.9446 3.02495L18.9454 3.02416C19.1995 1.83983 18.5171 1.3767 17.7365 1.66725L0.88192 8.12012C-0.268371 8.56662 -0.250955 9.20787 0.686378 9.49841L4.99542 10.8387L15.0045 4.57583C15.4755 4.26391 15.9038 4.4365 15.5515 4.74841L7.45513 12.0183Z" fill="white"/>
+                   </g>
+                   <defs>
+                     <clipPath id="clip0_35_905">
+                       <rect width="19" height="19" fill="white"/>
+                     </clipPath>
+                   </defs>
+                 </svg>
+                 Telegram</v-btn>
+             </v-card-text>
+             <v-card-text class="d-flex justify-space-between pt-0">
+               <div>
+                 <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                   <g clip-path="url(#clip0_35_935)">
+                     <path d="M12.8766 8.67887C12.0195 8.67887 11.1779 8.55226 10.3804 8.30335C9.98958 8.17746 9.50917 8.29295 9.27066 8.5243L7.6965 9.64661C5.87092 8.72625 4.7464 7.66455 3.78521 5.95334L4.93857 4.50537C5.23822 4.22274 5.3457 3.80989 5.21693 3.42252C4.95225 2.66535 4.81779 1.87088 4.81779 1.06101C4.81782 0.475966 4.31386 0 3.69443 0H1.12339C0.503964 0 0 0.475966 0 1.06098C0 7.76678 5.77639 13.2222 12.8766 13.2222C13.4961 13.2222 14 12.7463 14 12.1612V9.73982C14 9.15484 13.496 8.67887 12.8766 8.67887Z" fill="black"/>
+                   </g>
+                   <defs>
+                     <clipPath id="clip0_35_935">
+                       <rect width="14" height="13.2222" fill="white"/>
+                     </clipPath>
+                   </defs>
+                 </svg>
+                 +7 (495) 123-45-67
+               </div>
+               <div>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+                   <g clip-path="url(#clip0_35_1195)">
+                     <path d="M7.00287 6.7395C6.70432 6.92194 6.35754 7.01839 6 7.01839C5.64248 7.01839 5.2957 6.92194 4.99716 6.7395L0.0798984 3.73441C0.0526172 3.71774 0.0260391 3.70036 0 3.68249V8.60664C0 9.17121 0.499805 9.61926 1.10468 9.61926H10.8953C11.5112 9.61926 12 9.16111 12 8.60664V3.68246C11.9739 3.70038 11.9473 3.71781 11.9199 3.7345L7.00287 6.7395Z" fill="black"/>
+                     <path d="M0.469922 3.19811L5.38718 6.20322C5.57332 6.31698 5.78665 6.37385 5.99998 6.37385C6.21333 6.37385 6.42668 6.31696 6.61282 6.20322L11.5301 3.19811C11.8243 3.0184 12 2.71762 12 2.39299C12 1.8348 11.5046 1.38071 10.8957 1.38071H1.1043C0.495398 1.38073 0 1.83482 0 2.39352C0 2.71762 0.175687 3.0184 0.469922 3.19811Z" fill="black"/>
+                   </g>
+                   <defs>
+                     <clipPath id="clip0_35_1195">
+                       <rect width="12" height="11" fill="white"/>
+                     </clipPath>
+                   </defs>
+                 </svg>
+                 hello@trevelme.ru
+               </div>
+             </v-card-text>
+           </v-card>
+          </v-menu>
+        </div>
       </div>
       <v-spacer></v-spacer>
       <div>
         <v-btn
             elevation="0"
-            class="my_btn"
-            :to="$props.route !== '/' ? '/' : ''"
-            @click="$props.route === '/' ? $store.state.modals.type.login = true : ''"
+            color="accent"
+            rounded
+            fab
+            style="color: #252525"
+            class="font-weight-bold px-0 py-5 mr-6"
         >
-          <span >{{ $props.route === '/' ? 'Войти' : 'На главную' }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <g clip-path="url(#clip0_199_385)">
+              <path d="M17.8294 17.0207L13.1821 12.4477C14.3991 11.1255 15.1468 9.37682 15.1468 7.45261C15.1463 3.33639 11.7558 0 7.57324 0C3.39063 0 0.000213623 3.33639 0.000213623 7.45261C0.000213623 11.5688 3.39063 14.9052 7.57324 14.9052C9.38041 14.9052 11.0379 14.2802 12.3399 13.241L17.0052 17.832C17.2325 18.056 17.6016 18.056 17.8289 17.832C18.0567 17.6081 18.0567 17.2447 17.8294 17.0207ZM7.57324 13.7586C4.0343 13.7586 1.16543 10.9353 1.16543 7.45261C1.16543 3.96991 4.0343 1.14663 7.57324 1.14663C11.1122 1.14663 13.981 3.96991 13.981 7.45261C13.981 10.9353 11.1122 13.7586 7.57324 13.7586Z" fill="#959595"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_199_385">
+                <rect width="18" height="18" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </v-btn>
+        <v-btn
+            elevation="0"
+            color="accent"
+            rounded
+            fab
+            style="color: #252525"
+            class="font-weight-bold px-0 py-5 mr-6"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 23 22" fill="none">
+            <path d="M11.7485 19.6899C11.409 19.6941 11.0719 19.6306 10.7572 19.5031C10.4424 19.3756 10.1562 19.1867 9.9152 18.9474L3.54437 12.5308C2.78651 11.79 2.23553 10.864 1.94609 9.84449C1.65665 8.82503 1.63882 7.7476 1.89437 6.71911C2.16539 5.7255 2.68708 4.81815 3.40942 4.08402C4.13176 3.34989 5.03055 2.81359 6.01965 2.52652C7.00875 2.23945 8.05501 2.21123 9.05814 2.44457C10.0613 2.67791 10.9877 3.16499 11.7485 3.85911C12.5094 3.16499 13.4358 2.67791 14.4389 2.44457C15.4421 2.21123 16.4883 2.23945 17.4774 2.52652C18.4665 2.81359 19.3653 3.34989 20.0876 4.08402C20.81 4.81815 21.3317 5.7255 21.6027 6.71911C21.8634 7.75672 21.8456 8.84476 21.551 9.87327C21.2565 10.9018 20.6956 11.8343 19.9252 12.5766L13.5085 18.9933C13.0326 19.442 12.4027 19.6914 11.7485 19.6899ZM7.6877 3.66661C6.696 3.66661 5.73106 3.98826 4.9377 4.58328C4.09884 5.19871 3.49433 6.08124 3.22353 7.08578C3.02604 7.88857 3.0441 8.72928 3.27589 9.52285C3.50768 10.3164 3.94498 11.0347 4.54353 11.6049L10.9602 18.0216C11.1818 18.2422 11.4817 18.366 11.7944 18.366C12.107 18.366 12.4069 18.2422 12.6285 18.0216L19.0452 11.6508C19.6363 11.0652 20.0615 10.3332 20.2773 9.52963C20.4931 8.72603 20.4918 7.87955 20.2735 7.07661C20.0033 6.07672 19.4023 5.19786 18.5685 4.58328C17.6212 3.89073 16.4485 3.57897 15.2823 3.70967C14.1161 3.84038 13.0415 4.40403 12.271 5.28911C12.2028 5.3584 12.1215 5.41343 12.0318 5.45099C11.9421 5.48855 11.8458 5.50789 11.7485 5.50789C11.6513 5.50789 11.555 5.48855 11.4653 5.45099C11.3756 5.41343 11.2943 5.3584 11.226 5.28911C10.7878 4.77988 10.2448 4.37128 9.63415 4.09125C9.02347 3.81122 8.35952 3.66638 7.6877 3.66661Z" fill="#959595"/>
+          </svg>
+        </v-btn>
+        <v-btn
+            elevation="0"
+            color="accent"
+            rounded
+            style="color: #252525"
+            class=" px-7 py-7"
+        >
+          <span >Войти</span>
         </v-btn>
       </div>
-<!--      <div   v-if="$props.route !== '/'">-->
-<!--        <v-btn-->
-
-<!--            elevation="0"-->
-<!--            class="my_btn"-->
-<!--            to="/"-->
-<!--        >-->
-<!--          <span >На главную</span>-->
-<!--        </v-btn>-->
-<!--      </div>-->
 
     </v-app-bar>
+<!--    mobile navigator-->
     <v-app-bar
         v-else
         app
         :color="color"
         :flat="flat"
         :class="{ expand: flat }"
+        class=""
     >
       <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
-          class="mr-4"
           v-if="isXs && $props.route === '/'"
       />
-      <v-spacer v-if="isXs && $props.route === '/'"></v-spacer>
-      <v-toolbar-title>
-        <v-img src="@/assets/beeline/light.png" max-width="50px" />
-      </v-toolbar-title>
+      <div class="mobile_logo pl-0 my-auto">
+        <img src="@/assets/Логотип.png" />
+      </div>
 
       <v-spacer></v-spacer>
       <v-btn
-          v-if="$props.route === '/'"
           elevation="0"
-          class="my_btn"
-          @click="$store.state.modals.type.login = true"
+          color="accent"
+          rounded
+          fab
+          style="color: #252525;"
+          class="font-weight-bold mr-6"
       >
-        <span >Войти</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16.358" height="16.358" viewBox="0 0 23 22" fill="none">
+          <path d="M11.7485 19.6899C11.409 19.6941 11.0719 19.6306 10.7572 19.5031C10.4424 19.3756 10.1562 19.1867 9.9152 18.9474L3.54437 12.5308C2.78651 11.79 2.23553 10.864 1.94609 9.84449C1.65665 8.82503 1.63882 7.7476 1.89437 6.71911C2.16539 5.7255 2.68708 4.81815 3.40942 4.08402C4.13176 3.34989 5.03055 2.81359 6.01965 2.52652C7.00875 2.23945 8.05501 2.21123 9.05814 2.44457C10.0613 2.67791 10.9877 3.16499 11.7485 3.85911C12.5094 3.16499 13.4358 2.67791 14.4389 2.44457C15.4421 2.21123 16.4883 2.23945 17.4774 2.52652C18.4665 2.81359 19.3653 3.34989 20.0876 4.08402C20.81 4.81815 21.3317 5.7255 21.6027 6.71911C21.8634 7.75672 21.8456 8.84476 21.551 9.87327C21.2565 10.9018 20.6956 11.8343 19.9252 12.5766L13.5085 18.9933C13.0326 19.442 12.4027 19.6914 11.7485 19.6899ZM7.6877 3.66661C6.696 3.66661 5.73106 3.98826 4.9377 4.58328C4.09884 5.19871 3.49433 6.08124 3.22353 7.08578C3.02604 7.88857 3.0441 8.72928 3.27589 9.52285C3.50768 10.3164 3.94498 11.0347 4.54353 11.6049L10.9602 18.0216C11.1818 18.2422 11.4817 18.366 11.7944 18.366C12.107 18.366 12.4069 18.2422 12.6285 18.0216L19.0452 11.6508C19.6363 11.0652 20.0615 10.3332 20.2773 9.52963C20.4931 8.72603 20.4918 7.87955 20.2735 7.07661C20.0033 6.07672 19.4023 5.19786 18.5685 4.58328C17.6212 3.89073 16.4485 3.57897 15.2823 3.70967C14.1161 3.84038 13.0415 4.40403 12.271 5.28911C12.2028 5.3584 12.1215 5.41343 12.0318 5.45099C11.9421 5.48855 11.8458 5.50789 11.7485 5.50789C11.6513 5.50789 11.555 5.48855 11.4653 5.45099C11.3756 5.41343 11.2943 5.3584 11.226 5.28911C10.7878 4.77988 10.2448 4.37128 9.63415 4.09125C9.02347 3.81122 8.35952 3.66638 7.6877 3.66661Z" fill="#959595"/>
+        </svg>
       </v-btn>
       <v-btn
-          v-if="$props.route !== '/'"
           elevation="0"
-          class="my_btn"
-          to="/"
+          color="accent"
+          rounded
+          class="fz12 py-7 font-weight-bold"
+          style="color: black"
       >
-        <span >На главную</span>
+        <span >Войти</span>
       </v-btn>
     </v-app-bar>
   </div>
 </template>
 
 <style scoped>
+.header {}
 .v-toolbar {
   transition: 0.6s;
 }
@@ -137,8 +395,20 @@
   height: 80px !important;
   padding-top: 10px;
 }
+.mobile_logo img {
+  width: 100%;
+  height: 100%;
+  max-width: 99.284px;
+  max-height: 29.023px;
+}
 </style>
-
+<style>
+.v-menu__content {
+  border-radius: 15px !important;
+  background: #FFF !important;
+  box-shadow: 0px 7px 100px 0px rgba(0, 0, 0, 0.15) !important;
+}
+</style>
 <script>
 export default {
   data: () => ({
@@ -146,13 +416,11 @@ export default {
     isXs: false,
     simplified: false,
     items: [
-      ["mdi-home-outline", "О нас", "#about"],
-      ["mdi-information-outline", "Наши преимущества", "#advantage"],
-      ["mdi-download-box-outline", "Beeline Team", "#team"],
-      ["mdi-currency-usd", "Кондидатам", "#instruction"],
-      ["mdi-email-outline", "Инструкция", "#instruction"],
-      ["mdi-email-outline", "FAQ", "#FAQ"],
+      [ "О сервисе", "#about"],
+      [ "Блог", "#team"],
+      [ "Партнерская программа", "#"],
     ],
+    list: ['Ваш контент', 'Ваш контент', 'Ваш контент']
   }),
   props: {
     color: String,
